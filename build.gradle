@@ -1,0 +1,56 @@
+plugins {
+    id 'idea'
+    id 'java-library'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+apply plugin: 'org.openjfx.javafxplugin'
+
+group 'fr.dtn'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io/' }
+    maven { url 'https://litarvan.github.io/maven' }
+}
+
+dependencies {
+    implementation 'fr.litarvan:openauth:1+'
+    implementation 'de.jensd:fontawesomefx-fontawesome:4+'
+
+    implementation 'fr.flowarg:flowupdater:1+'
+    implementation 'fr.flowarg:flowupdater-curseforgeplugin:2+'
+    implementation 'fr.flowarg:flowupdater-optifineplugin:2+'
+    implementation 'fr.flowarg:openlauncherlib:3+'
+
+    implementation 'com.github.goxr3plus:FX-BorderlessScene:4+'
+    implementation 'com.github.oshi:oshi-core:5+'
+}
+
+javafx {
+    version = 12
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing' ]
+}
+
+application {
+    getMainClass().set('fr.dtn.launcher.Main')
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest.attributes.put('Main-Class', 'fr.dtn.launcher.Main')
+
+    from {
+        configurations.compileClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+sourceCompatibility = 1.11
